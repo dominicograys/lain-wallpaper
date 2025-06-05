@@ -7,6 +7,7 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
       background: #000;
       color: #00ff41;
@@ -14,6 +15,7 @@
       overflow: hidden;
       height: 100vh;
     }
+
     .container {
       position: relative;
       width: 100%;
@@ -23,25 +25,113 @@
       justify-content: center;
       align-items: center;
     }
-    .scanlines {
+
+    .scanlines, .noise, .matrix-rain {
       position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(transparent 50%, rgba(0, 255, 65, 0.03) 50%);
-      background-size: 100% 4px;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       pointer-events: none;
+    }
+
+    .scanlines {
+      background: linear-gradient(transparent 50%, rgba(0,255,65,0.03) 50%);
+      background-size: 100% 4px;
       animation: scanlines 0.1s linear infinite;
     }
-    @keyframes scanlines {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(4px); }
-    }
+
     .noise {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
       opacity: 0.02;
       background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><defs><filter id="noise"><feTurbulence baseFrequency="0.9" numOctaves="1" result="noise"/><feColorMatrix in="noise" type="saturate" values="0"/></filter></defs><rect width="100%" height="100%" filter="url(%23noise)"/></svg>');
       animation: noise 0.2s steps(10) infinite;
     }
+
+    .matrix-rain {
+      z-index: -1;
+    }
+
+    .matrix-column {
+      position: absolute;
+      top: -100%;
+      color: #00ff41;
+      font-size: 18px;
+      animation: matrix-fall linear infinite;
+      opacity: 0.6;
+    }
+
+    .main-text {
+      font-size: 3rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 2rem;
+      text-shadow: 0 0 10px #00ff41;
+      animation: glitch 2s infinite;
+    }
+
+    .terminal {
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid #00ff41;
+      padding: 20px;
+      margin: 20px;
+      min-width: 60%;
+      max-width: 80%;
+      font-size: 1.2rem;
+      box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+    }
+
+    .terminal-header {
+      border-bottom: 1px solid #00ff41;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .cursor {
+      animation: blink 1s infinite;
+    }
+
+    .error-text {
+      color: #ff0040;
+      text-shadow: 0 0 5px #ff0040;
+    }
+
+    .status-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 255, 65, 0.1);
+      padding: 10px;
+      font-size: 0.9rem;
+      border-top: 1px solid #00ff41;
+    }
+
+    .wired-text {
+      animation: wired-glow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes matrix-fall {
+      to { transform: translateY(100vh); }
+    }
+
+    @keyframes glitch {
+      0%, 90%, 100% { transform: translate(0); filter: hue-rotate(0deg); }
+      10% { transform: translate(-2px, 2px); filter: hue-rotate(90deg); }
+      20% { transform: translate(-2px, -2px); filter: hue-rotate(180deg); }
+      30% { transform: translate(2px, 2px); filter: hue-rotate(270deg); }
+      40% { transform: translate(2px, -2px); filter: hue-rotate(360deg); }
+    }
+
+    @keyframes wired-glow {
+      from { text-shadow: 0 0 5px #00ff41, 0 0 10px #00ff41; }
+      to { text-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41; }
+    }
+
+    @keyframes scanlines {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(4px); }
+    }
+
     @keyframes noise {
       0%, 100% { transform: translate(0, 0); }
       10% { transform: translate(-5%, -5%); }
@@ -54,82 +144,10 @@
       80% { transform: translate(-15%, 10%); }
       90% { transform: translate(10%, 5%); }
     }
-    .main-text {
-      font-size: 3rem;
-      font-weight: bold;
-      text-align: center;
-      margin-bottom: 2rem;
-      text-shadow: 0 0 10px #00ff41;
-      animation: glitch 2s infinite;
-    }
-    @keyframes glitch {
-      0%, 90%, 100% { transform: translate(0); filter: hue-rotate(0deg); }
-      10% { transform: translate(-2px, 2px); filter: hue-rotate(90deg); }
-      20% { transform: translate(-2px, -2px); filter: hue-rotate(180deg); }
-      30% { transform: translate(2px, 2px); filter: hue-rotate(270deg); }
-      40% { transform: translate(2px, -2px); filter: hue-rotate(360deg); }
-    }
-    .terminal {
-      background: rgba(0, 0, 0, 0.8);
-      border: 2px solid #00ff41;
-      padding: 20px;
-      margin: 20px;
-      min-width: 60%;
-      max-width: 80%;
-      font-size: 1.2rem;
-      box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
-    }
-    .terminal-header {
-      border-bottom: 1px solid #00ff41;
-      padding-bottom: 10px;
-      margin-bottom: 15px;
-      display: flex;
-      justify-content: space-between;
-    }
-    .matrix-rain {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: -1;
-    }
-    .matrix-column {
-      position: absolute;
-      top: -100%;
-      color: #00ff41;
-      font-size: 18px;
-      animation: matrix-fall linear infinite;
-      opacity: 0.6;
-    }
-    @keyframes matrix-fall {
-      to { transform: translateY(100vh); }
-    }
-    .cursor {
-      animation: blink 1s infinite;
-    }
+
     @keyframes blink {
       0%, 50% { opacity: 1; }
       51%, 100% { opacity: 0; }
-    }
-    .error-text {
-      color: #ff0040;
-      text-shadow: 0 0 5px #ff0040;
-    }
-    .status-bar {
-      position: absolute;
-      bottom: 0;
-      left: 0; right: 0;
-      background: rgba(0, 255, 65, 0.1);
-      padding: 10px;
-      font-size: 0.9rem;
-      border-top: 1px solid #00ff41;
-    }
-    .wired-text {
-      animation: wired-glow 3s ease-in-out infinite alternate;
-    }
-    @keyframes wired-glow {
-      from { text-shadow: 0 0 5px #00ff41, 0 0 10px #00ff41, 0 0 15px #00ff41; }
-      to { text-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41, 0 0 30px #00ff41; }
     }
   </style>
 </head>
@@ -166,10 +184,11 @@
   </div>
 
   <script>
-    // Matrix rain
+    // RUSSIAN CHARACTERS!
+    const characters = '01АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ';
+
     function createMatrixRain() {
       const matrixContainer = document.querySelector('.matrix-rain');
-      const characters = '01АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ';
       for (let i = 0; i < 50; i++) {
         const column = document.createElement('div');
         column.className = 'matrix-column';
@@ -185,104 +204,54 @@
       }
     }
 
-    // Glitch effect
-    function glitchText() {
-      const mainText = document.querySelector('.main-text');
-      const originalText = mainText.innerHTML;
-      const glitchChars = '!@#$%^&*(){}[]<>?/.,;:"';
-      setInterval(() => {
-        if (Math.random() < 0.1) {
-          let glitched = originalText;
-          for (let i = 0; i < 3; i++) {
-            const pos = Math.floor(Math.random() * originalText.length);
-            const char = glitchChars[Math.floor(Math.random() * glitchChars.length)];
-            glitched = glitched.substring(0, pos) + char + glitched.substring(pos + 1);
-          }
-          mainText.innerHTML = glitched;
-          setTimeout(() => { mainText.innerHTML = originalText; }, 100);
-        }
-      }, 500);
-    }
-
-    // Terminal loop typing
-    function typeInTerminal() {
-      const terminal = document.querySelector('.terminal .content');
-      const commands = [
-        '$ ping reality.exe',
-        'PING reality.exe: Host unreachable',
-        '$ sudo rm -rf /ego/*',
-        'Permission granted. Ego deleted.',
-        '$ echo "Who am I?"',
-        'Lain is Lain. Lain of the Wired.',
-        '$ ./love_machine.sh',
-        'Love machine activated...',
-        'Connection to all humans established.',
-        '$ exit',
-        'You cannot leave the Wired.'
-      ];
-      let i = 0;
-      setInterval(() => {
-        if (i < commands.length && Math.random() < 0.3) {
-          const line = document.createElement('div');
-          line.textContent = commands[i];
-          if (line.textContent.includes('ERROR') || line.textContent.includes('unreachable')) {
-            line.classList.add('error-text');
-          }
-          terminal.appendChild(line);
-          i++;
-          while (terminal.children.length > 15) terminal.removeChild(terminal.firstChild);
-        }
-      }, 3000);
-    }
-
-    // Flicker
-    function screenFlicker() {
-      setInterval(() => {
-        if (Math.random() < 0.05) {
-          document.body.style.filter = 'brightness(0.3) contrast(3)';
-          setTimeout(() => {
-            document.body.style.filter = 'none';
-          }, 50);
-        }
-      }, 1000);
-    }
-
-    // Solana block fetch
     function fetchBlockhash() {
-      fetch("https://api.mainnet-beta.solana.com", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      fetch('https://api.mainnet-beta.solana.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          jsonrpc: "2.0",
+          jsonrpc: '2.0',
           id: 1,
-          method: "getLatestBlockhash"
+          method: 'getLatestBlockhash'
         })
       })
       .then(res => res.json())
       .then(data => {
         const hash = data?.result?.value?.blockhash;
+        const terminal = document.querySelector('.terminal .content');
+        const line = document.createElement('div');
         if (hash) {
-          const terminal = document.querySelector('.terminal .content');
-          const line = document.createElement('div');
           line.textContent = `$ solana blockhash: ${hash}`;
-          terminal.appendChild(line);
+          line.classList.add('wired-text');
         } else {
-          console.error("Failed to get blockhash:", data);
+          line.textContent = 'ERROR: No blockhash returned.';
+          line.classList.add('error-text');
         }
+        terminal.appendChild(line);
+        while (terminal.children.length > 15) terminal.removeChild(terminal.firstChild);
       })
-      .catch(err => console.error("Fetch error:", err));
+      .catch(err => {
+        const terminal = document.querySelector('.terminal .content');
+        const error = document.createElement('div');
+        error.textContent = 'ERROR: Failed to fetch Solana block.';
+        error.classList.add('error-text');
+        terminal.appendChild(error);
+      });
     }
 
-    // Initialize
+    // Periodic effects
     createMatrixRain();
-    glitchText();
-    typeInTerminal();
-    screenFlicker();
     fetchBlockhash();
-    setInterval(fetchBlockhash, 30000); // Update every 30s
+    setInterval(fetchBlockhash, 30000); // every 30 seconds
+
+    // Optional fun: screen flicker
     setInterval(() => {
-      document.querySelector('.noise').style.opacity = Math.random() * 0.05;
-    }, 100);
+      if (Math.random() < 0.05) {
+        document.body.style.filter = 'brightness(0.3) contrast(3)';
+        setTimeout(() => {
+          document.body.style.filter = 'none';
+        }, 50);
+      }
+    }, 1000);
   </script>
 </body>
 </html>
