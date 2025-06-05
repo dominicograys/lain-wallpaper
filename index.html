@@ -14,6 +14,7 @@
       font-family: 'Courier Prime', monospace;
       overflow: hidden;
       height: 100vh;
+      position: relative;
     }
 
     .container {
@@ -110,6 +111,21 @@
       animation: wired-glow 3s ease-in-out infinite alternate;
     }
 
+    .background-quotes {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      font-size: 1rem;
+      opacity: 0.1;
+      line-height: 1.5rem;
+      padding: 40px;
+      color: #00ff41;
+      pointer-events: none;
+      white-space: pre-wrap;
+    }
+
     @keyframes matrix-fall {
       to { transform: translateY(100vh); }
     }
@@ -181,77 +197,36 @@
     <div class="status-bar">
       <span>Status: CONNECTED | Protocol: 7 | Reality Level: UNDEFINED | User: LAIN</span>
     </div>
+
+    <div class="background-quotes">
+      "No, that's not what I said."
+      "Listen, listen, listen! You won't believe it, or more like, I don't want to believe it!"
+      "The cream's gonna drip."
+      "Just die."
+      "OMG, that's sooo cute. I want one! Where did you get it?"
+      "You start to get numb and lose all feeling then you start feeling like all the pollutants in your body are just floating away..."
+      "Would a normal person send a creepy thing like that just out of the blue?"
+      "No, that's a different kid."
+      "lain?"
+      "The cream dripped."
+      "Is that a true story? For real?"
+      "No waaay! I've never heard that! (cries)"
+      "Who's lain again?"
+      "It's like, he's there physically, but his eyes are looking somewhere else - you know?"
+      "That is just totally weak."
+      "Who's that on the bed? And so pale, too."
+      "No, that's not what I said!"
+      "No, no, it's like you're just punching in random phone numbers on the cell but the same guy always answers!"
+      "Is that lain?"
+      "Forget it, that is so not you."
+      "Well, of course the boyfriend would get mad!"
+      "And then I was, like, so mad I totally ignored him and like landed a kick on his shin - crack! (lol)"
+      "Who's lain?"
+      "How many times do I have to say this - why can you understand what I'm thinking but I can't understand what you're thinking!?"
+      "Kissing? Love it."
+      "What the hell are you talking about, woman?"
+      "Is that like what they call a 'hex'?"
+    </div>
   </div>
-
-  <script>
-    // RUSSIAN CHARACTERS!
-    const characters = '01АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ';
-
-    function createMatrixRain() {
-      const matrixContainer = document.querySelector('.matrix-rain');
-      for (let i = 0; i < 50; i++) {
-        const column = document.createElement('div');
-        column.className = 'matrix-column';
-        column.style.left = Math.random() * 100 + '%';
-        column.style.animationDuration = (Math.random() * 3 + 2) + 's';
-        column.style.animationDelay = Math.random() * 2 + 's';
-        let columnText = '';
-        for (let j = 0; j < 20; j++) {
-          columnText += characters[Math.floor(Math.random() * characters.length)] + '<br>';
-        }
-        column.innerHTML = columnText;
-        matrixContainer.appendChild(column);
-      }
-    }
-
-    function fetchBlockhash() {
-      fetch('https://api.mainnet-beta.solana.com', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          jsonrpc: '2.0',
-          id: 1,
-          method: 'getLatestBlockhash'
-        })
-      })
-      .then(res => res.json())
-      .then(data => {
-        const hash = data?.result?.value?.blockhash;
-        const terminal = document.querySelector('.terminal .content');
-        const line = document.createElement('div');
-        if (hash) {
-          line.textContent = `$ solana blockhash: ${hash}`;
-          line.classList.add('wired-text');
-        } else {
-          line.textContent = 'ERROR: No blockhash returned.';
-          line.classList.add('error-text');
-        }
-        terminal.appendChild(line);
-        while (terminal.children.length > 15) terminal.removeChild(terminal.firstChild);
-      })
-      .catch(err => {
-        const terminal = document.querySelector('.terminal .content');
-        const error = document.createElement('div');
-        error.textContent = 'ERROR: Failed to fetch Solana block.';
-        error.classList.add('error-text');
-        terminal.appendChild(error);
-      });
-    }
-
-    // Periodic effects
-    createMatrixRain();
-    fetchBlockhash();
-    setInterval(fetchBlockhash, 30000); // every 30 seconds
-
-    // Optional fun: screen flicker
-    setInterval(() => {
-      if (Math.random() < 0.05) {
-        document.body.style.filter = 'brightness(0.3) contrast(3)';
-        setTimeout(() => {
-          document.body.style.filter = 'none';
-        }, 50);
-      }
-    }, 1000);
-  </script>
 </body>
 </html>
